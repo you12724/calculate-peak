@@ -7,7 +7,7 @@ public class PeakSearcher {
 		this.path = path;
 	}
 
-	public void makeAverageCSV() {
+	public ResonantModel[] searchAverages() {
 		ResonantModel model = CSVFileReader.read(path);
 		ResonantModel averageModel1 = CSVFileConverter.makeAverageModel(model, 1);
 		ResonantModel averageModel2 = CSVFileConverter.makeAverageModel(model, 2);
@@ -17,31 +17,12 @@ public class PeakSearcher {
 		ResonantModel averageModel6 = CSVFileConverter.makeAverageModel(model, 6);
 
 		ResonantModel[] averageModels = {model ,averageModel1, averageModel2, averageModel3, averageModel4, averageModel5, averageModel6};
-		CSVFileWriter writer = new CSVFileWriter();
-		writer.write(averageModels, "output2");
-
-		System.out.println("完了！！！");
+		return averageModels;
 	}
 
-	public void makePeakCSV() {
+	public ResonantModel[] searchPeaks() {
 		ResonantModel model = CSVFileReader.read(path);
-		CSVFileWriter writer = new CSVFileWriter();
-		writer.write(CSVFileConverter.searchPeaks(model, true), "Arai_165");
-		writer.writeWithOriginal(model, CSVFileConverter.searchPeaks(model, true), "Arai_165-2");
-		System.out.println("完了！！！");
-
+		ResonantModel[] searchModels = {CSVFileConverter.searchPeaks(model, true), CSVFileConverter.searchPeaks(model, true)};
+		return searchModels;
 	}
-
-	public void makeAverage() {
-		ResonantModel model = CSVFileReader.read(path);
-		ResonantModel averageModel = CSVFileConverter.makeAverageModel(model, 2);
-
-		ResonantModel[] averageModels = {model ,averageModel};
-		CSVFileWriter writer = new CSVFileWriter();
-		writer.write(averageModels, "output");
-
-		System.out.println("完了！！！");
-	}
-
-
 }

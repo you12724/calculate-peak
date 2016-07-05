@@ -14,9 +14,13 @@ public class ViewMaker extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	boolean isWin = true;
+	
 	File targetFile = null;
 	
-	public ViewMaker() {
+	public ViewMaker(boolean isWin) {
+		this.isWin = isWin;
+		
 		JButton selectButton = new JButton("select csv file...");
 		selectButton.setActionCommand("select");
 		selectButton.addActionListener(this);
@@ -54,8 +58,13 @@ public class ViewMaker extends JFrame implements ActionListener {
 	      }
 		} else if (buttonName.equals("complete")) {
 			if (this.targetFile != null) {
-				PeakSearcher calculater = new PeakSearcher(this.targetFile.getAbsolutePath());
-				calculater.makePeakCSV();
+				PeakSearcher seacher = new PeakSearcher(this.targetFile.getAbsolutePath());
+				ResonantModel[] models = seacher.searchPeaks();
+				CSVFileWriter writer = new CSVFileWriter(this.isWin);
+				for (int i = 0; i < models.length; i++) {
+					writer.write(models[i], "test-" + String.valueOf(i));
+				}
+				System.out.println("完了！！");
 			} else {
 				System.out.println("ファイルを選択してください。");
 			}

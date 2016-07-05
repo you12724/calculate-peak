@@ -6,10 +6,14 @@ import java.io.PrintWriter;
 
 public class CSVFileWriter {
 	
-	static String separator = "/";
+	String separator = "/";
 	
-	public CSVFileWriter() {
-		File resultDir = new File("result");
+	public CSVFileWriter(boolean isWin) {
+		if (isWin) {
+			this.separator = "¥¥";
+		}
+		
+		File resultDir = new File(".." + separator + "result");
 		if (!resultDir.exists()) {
 			resultDir.mkdir();
 		}
@@ -18,7 +22,7 @@ public class CSVFileWriter {
     public void write(ResonantModel model, String name) {
     	
         try {
-            FileWriter fw = new FileWriter("result" + separator + name + ".csv", false);
+            FileWriter fw = new FileWriter(".." + separator + "result" + separator + name + ".csv", false);
             PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
             for (int i = 0; i < model.size(); i++) {
@@ -36,7 +40,7 @@ public class CSVFileWriter {
 
     public void writeWithOriginal(ResonantModel original, ResonantModel peak, String name) {
         try {
-            FileWriter fw = new FileWriter("result" + separator + name + ".csv", false);
+            FileWriter fw = new FileWriter(".." + separator + "result" + separator + name + ".csv", false);
             PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
             for (int i = 0; i < original.size(); i++) {
@@ -63,7 +67,7 @@ public class CSVFileWriter {
     public void write(ResonantModel[] models, String name) {
 
         try {
-            FileWriter fw = new FileWriter("result" + separator + name + ".csv", false);
+            FileWriter fw = new FileWriter(".." + separator + "result" + separator + name + ".csv", false);
             PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
             for (int i = 0; i < models[0].size(); i++) {

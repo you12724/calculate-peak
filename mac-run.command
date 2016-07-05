@@ -1,3 +1,3 @@
 cd `dirname $0`
 cd bin
-java ShowView
+java ShowView mac
