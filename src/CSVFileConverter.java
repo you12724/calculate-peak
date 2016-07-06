@@ -30,7 +30,7 @@ public class CSVFileConverter {
 
 	static ResonantModel makeAverageModel(ResonantModel model, int times) {
 
-		ResonantModel averageModel = new ResonantModel(model);
+		ResonantModel averageModel = ResonantModel.copy(model);
 
 		for (int j = 0; j < times; j++) {
 

@@ -1,12 +1,17 @@
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class ViewMaker extends JFrame implements ActionListener {
 	/**
@@ -14,27 +19,37 @@ public class ViewMaker extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	File targetFile = null;
+	ResonantModel inputModel;
+	JTextField textField;
+	JLabel feedBackLabel;
 	
-	public ViewMaker() {
+	private ViewMaker() {
+		
 		JButton selectButton = new JButton("select csv file...");
 		selectButton.setActionCommand("select");
 		selectButton.addActionListener(this);
+		
+		textField = new JTextField("output", 10);
+		JLabel label = new JLabel("output file's name");
 		
 		JButton completeButton = new JButton("complete");
 		completeButton.setActionCommand("complete");
 		completeButton.addActionListener(this);
 		
-		JPanel selectPanel = new JPanel();
-		selectPanel.add(selectButton);
-		getContentPane().add(selectPanel, BorderLayout.NORTH);
+		feedBackLabel = new JLabel("Select csv file.");
 		
-		JPanel completePanel = new JPanel();
-		completePanel.add(completeButton);
-		getContentPane().add(completePanel, BorderLayout.PAGE_END);
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+				
+		panel.add(selectButton);
+		panel.add(label);
+		panel.add(textField);
+		panel.add(completeButton);
+		panel.add(feedBackLabel);
+		getContentPane().add(panel);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 400, 300);
+		this.setBounds(10, 300, 300, 150);
 		this.setTitle("CSVの読み込み");
 		this.setVisible(true);
 	}
@@ -57,21 +72,27 @@ public class ViewMaker extends JFrame implements ActionListener {
 		int selected = fileChooser.showOpenDialog(this);
 		if (selected == JFileChooser.APPROVE_OPTION){
 	        File file = fileChooser.getSelectedFile();
-	        this.targetFile = file;
+	        this.inputModel = CSVFileReader.read(file.getAbsolutePath());
+	        ChartMaker.showChart(this.inputModel);
 	      }
 	}
 	
 	private void completeProcess() {
-		if (this.targetFile != null) {
-			PeakSearcher seacher = new PeakSearcher(this.targetFile.getAbsolutePath());
+		if (this.inputModel != null) {
+			PeakSearcher seacher = new PeakSearcher(this.inputModel);
 			ResonantModel[] models = seacher.searchPeaks();
 			CSVFileWriter writer = new CSVFileWriter();
+			String inputText = textField.getText();
 			for (int i = 0; i < models.length; i++) {
-				writer.write(models[i], "test-" + String.valueOf(i));
+				writer.write(models[i], inputText + "-" + String.valueOf(i));
 			}
-			System.out.println("完了！！");
+			feedBackLabel.setText("Complete!!");
 		} else {
-			System.out.println("ファイルを選択してください。");
+			feedBackLabel.setText("Error: You must select csv file.");
 		}
+	}
+	
+	static public void showView() {
+		new ViewMaker();
 	}
 }

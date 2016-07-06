@@ -5,15 +5,13 @@ public class ResonantModel {
 	private List<Double> x = new ArrayList<Double>();
 	private List<Double> y = new ArrayList<Double>();
 
-	public ResonantModel(ResonantModel model) {
+	static public ResonantModel copy(ResonantModel model) {
+		ResonantModel copyModel = new ResonantModel();
 		for (int i = 0; i < model.x.size(); i++) {
-			this.addX(model.getX(i));
-			this.addY(model.getY(i));
+			copyModel.addX(model.getX(i));
+			copyModel.addY(model.getY(i));
 		}
-	}
-
-	public ResonantModel() {
-
+		return copyModel;
 	}
 
 	public double getX(int i) {
@@ -56,5 +54,25 @@ public class ResonantModel {
 
 	public int size() {
 		return this.x.size();
+	}
+	
+	public double getMinY(){
+		double minY = 100;
+		for (double y : this.y) {
+			if (minY > y) {
+				minY = y;
+			}
+		}
+		return minY;
+	}
+	
+	public double getMaxY(){
+		double maxY = -100;
+		for (double y : this.y) {
+			if (maxY < y) {
+				maxY = y;
+			}
+		}
+		return maxY;
 	}
 }

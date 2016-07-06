@@ -1,14 +1,13 @@
 
 public class PeakSearcher {
 	
-	String path;
+	ResonantModel model;
 	
-	public PeakSearcher(String path) {
-		this.path = path;
+	public PeakSearcher(ResonantModel model) {
+		this.model = model;
 	}
 
 	public ResonantModel[] searchAverages() {
-		ResonantModel model = CSVFileReader.read(path);
 		ResonantModel averageModel1 = CSVFileConverter.makeAverageModel(model, 1);
 		ResonantModel averageModel2 = CSVFileConverter.makeAverageModel(model, 2);
 		ResonantModel averageModel3 = CSVFileConverter.makeAverageModel(model, 3);
@@ -21,7 +20,6 @@ public class PeakSearcher {
 	}
 
 	public ResonantModel[] searchPeaks() {
-		ResonantModel model = CSVFileReader.read(path);
 		ResonantModel[] searchModels = {CSVFileConverter.searchPeaks(model, true), CSVFileConverter.searchPeaks(model, true)};
 		return searchModels;
 	}
