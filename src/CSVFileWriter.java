@@ -8,11 +8,7 @@ public class CSVFileWriter {
 	
 	String separator = "/";
 	
-	public CSVFileWriter(boolean isWin) {
-		if (isWin) {
-			this.separator = "¥¥";
-		}
-		
+	public CSVFileWriter() {
 		File resultDir = new File(".." + separator + "result");
 		if (!resultDir.exists()) {
 			resultDir.mkdir();
