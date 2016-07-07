@@ -4,14 +4,13 @@ import java.awt.Color;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
- 
+import javax.swing.JPanel;
+
 import org.jfree.chart.ChartColor;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
@@ -32,6 +31,7 @@ public class ChartViewMaker extends JFrame implements ActionListener{
     XYSeries series = null;
     ResonantModel model;
     MyChartPanel cpanel;
+    JComboBox<String> selectBox;
      
     /**
      * @param args
@@ -106,8 +106,15 @@ public class ChartViewMaker extends JFrame implements ActionListener{
         cpanel = new MyChartPanel(Chart, model);
         getContentPane().add(cpanel, BorderLayout.CENTER);
         
+        String[] peakOrDip = {"Peak", "Dip"};
+        selectBox = new JComboBox<String>(peakOrDip);
+        selectBox.addActionListener(this);
+        JPanel selectPanel = new JPanel();
+        selectPanel.add(selectBox);
+        getContentPane().add(selectPanel, BorderLayout.SOUTH);
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(370, 300, 800, 500);
+        this.setBounds(360 + Const.VIEW_OFFSET_X, Const.VIEW_OFFSET_Y, 800, 500);
         this.setTitle("input csv file");
         this.setVisible(true);
         
@@ -132,7 +139,11 @@ public class ChartViewMaker extends JFrame implements ActionListener{
      
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		if (selectBox.getSelectedIndex() == 0) {
+			cpanel.isPeak = true;
+		} else {
+			cpanel.isPeak = false;
+		}
 	}
 	
 	static public void showChart(ResonantModel model){

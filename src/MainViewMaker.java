@@ -46,7 +46,7 @@ public class MainViewMaker extends JFrame implements ActionListener {
 		getContentPane().add(panel);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(10, 300, 350, 150);
+		this.setBounds(Const.VIEW_OFFSET_X, Const.VIEW_OFFSET_Y, 350, 150);
 		this.setTitle("CSVの読み込み");
 		this.setVisible(true);
 	}

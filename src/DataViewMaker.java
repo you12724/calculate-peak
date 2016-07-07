@@ -17,12 +17,12 @@ public class DataViewMaker extends JFrame implements ActionListener {
 	
 	private static DataViewMaker viewMaker = new DataViewMaker();
 	private JLabel dataLabel;
-	private ResonantModel model;
+	private ResonantModel choosePeakModel;
 	private JTextField fileNameField;
 	
 	private DataViewMaker() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(10, 460, 350, 390);
+		this.setBounds(Const.VIEW_OFFSET_X, 160 + Const.VIEW_OFFSET_Y, 350, 400);
 		this.setTitle("選択したピークのデータ");
 		this.setVisible(true);
 		
@@ -52,18 +52,18 @@ public class DataViewMaker extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("clear")) {
-			this.model = null;
+			this.choosePeakModel = null;
 			this.dataLabel.setText("");
 		} else if (e.getActionCommand().equals("output")) {
 			CSVFileWriter writer = new CSVFileWriter();
-			writer.write(model, fileNameField.getText());
+			writer.write(choosePeakModel, fileNameField.getText());
 			String text = dataLabel.getText() + "<br>complete!!";
 			dataLabel.setText(text);
 		}
 	}
 	
 	public void reloadModel(ResonantModel model) {
-		this.model = model;
+		this.choosePeakModel = model;
 		String text = "<html>";
 		for (int i = 0; i < model.size(); i++){
 			text += "x: " + model.getX(i) + ", y: " + model.getY(i) + "<br>";

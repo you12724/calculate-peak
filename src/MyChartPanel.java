@@ -16,6 +16,7 @@ class MyChartPanel extends ChartPanel {
 	double lastY = 0;
 	ResonantModel model;
 	ResonantModel choosePeakModel;
+	boolean isPeak = true;
 	
 	public MyChartPanel(JFreeChart chart, ResonantModel model) {
 		super(chart);
@@ -62,10 +63,15 @@ class MyChartPanel extends ChartPanel {
     	if (firstXPoint > model.size()) {
     		firstXPoint = model.size();
     	}
-    	int minYIndex = model.searchIndexMinYInRange(firstXPoint, lastXPoint);
-    	System.out.println("minY y: " + model.getY(minYIndex) + " x: " + model.getX(minYIndex));
-    	this.choosePeakModel.addX(model.getX(minYIndex));
-    	this.choosePeakModel.addY(model.getY(minYIndex));
+    	int yIndex;
+    	if (isPeak) {
+    		yIndex = model.searchIndexMaxYInRange(firstXPoint, lastXPoint);
+    	} else {
+    		yIndex = model.searchIndexMinYInRange(firstXPoint, lastXPoint);
+    	}
+    	System.out.println("minY y: " + model.getY(yIndex) + " x: " + model.getX(yIndex));
+    	this.choosePeakModel.addX(model.getX(yIndex));
+    	this.choosePeakModel.addY(model.getY(yIndex));
     	DataViewMaker.sharedInstance().reloadModel(choosePeakModel);
     	firstX = 0;
     	firstY = 0;
