@@ -1,6 +1,3 @@
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ViewMaker extends JFrame implements ActionListener {
+public class MainViewMaker extends JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -23,7 +20,7 @@ public class ViewMaker extends JFrame implements ActionListener {
 	JTextField textField;
 	JLabel feedBackLabel;
 	
-	private ViewMaker() {
+	private MainViewMaker() {
 		
 		JButton selectButton = new JButton("select csv file...");
 		selectButton.setActionCommand("select");
@@ -49,7 +46,7 @@ public class ViewMaker extends JFrame implements ActionListener {
 		getContentPane().add(panel);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(10, 300, 300, 150);
+		this.setBounds(10, 300, 350, 150);
 		this.setTitle("CSVの読み込み");
 		this.setVisible(true);
 	}
@@ -57,7 +54,6 @@ public class ViewMaker extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String buttonName = e.getActionCommand();
-		
 		if (buttonName.equals("select")) {
 			setSelectFile();
 		} else if (buttonName.equals("complete")) {
@@ -73,7 +69,7 @@ public class ViewMaker extends JFrame implements ActionListener {
 		if (selected == JFileChooser.APPROVE_OPTION){
 	        File file = fileChooser.getSelectedFile();
 	        this.inputModel = CSVFileReader.read(file.getAbsolutePath());
-	        ChartMaker.showChart(this.inputModel);
+	        ChartViewMaker.showChart(this.inputModel);
 	      }
 	}
 	
@@ -93,6 +89,6 @@ public class ViewMaker extends JFrame implements ActionListener {
 	}
 	
 	static public void showView() {
-		new ViewMaker();
+		new MainViewMaker();
 	}
 }

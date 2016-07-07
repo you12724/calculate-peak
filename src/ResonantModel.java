@@ -75,4 +75,53 @@ public class ResonantModel {
 		}
 		return maxY;
 	}
+	
+	public double getMinX(){
+		double minX = 1000000000;
+		for (double x : this.x) {
+			if (minX > x) {
+				minX = x;
+			}
+		}
+		return minX;
+	}
+	
+	public double getMaxX(){
+		double maxX = -100;
+		for (double x : this.x) {
+			if (maxX < x) {
+				maxX = x;
+			}
+		}
+		return maxX;
+	}
+	
+	public int searchIndexMinYInRange(int point1, int point2){
+		int smallVaule = Math.min(point1, point2);
+		int largeValue = Math.max(point1, point2);
+		double result = 100;
+		int index = 0;
+		for (int i = smallVaule; i < largeValue; i++) {
+			if (this.getY(i) < result) {
+				result = this.getY(i);
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	public int searchIndexMaxYInRange(int point1, int point2){
+		int smallVaule = Math.min(point1, point2);
+		int largeValue = Math.max(point1, point2);
+		double result = -100;
+		int index = 0;
+		for (int i = smallVaule; i < largeValue; i++) {
+			if (this.getY(i) > result) {
+				result = this.getY(i);
+				index = i;
+			}
+		}
+		return index;
+	}
+
 }

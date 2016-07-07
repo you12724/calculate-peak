@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
- 
+import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
+
 import javax.swing.JFrame;
  
 import org.jfree.chart.ChartColor;
@@ -19,24 +21,24 @@ import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
  
-public class ChartMaker extends JFrame implements ActionListener{
+public class ChartViewMaker extends JFrame implements ActionListener{
  
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	// XYSeriesCollectionクラス
     XYSeriesCollection data = null;
-    // グラフのデータ
     XYSeries series = null;
+    ResonantModel model;
+    MyChartPanel cpanel;
      
     /**
      * @param args
      */
      
-    private ChartMaker(ResonantModel model) {
-     // タイトル名
+    private ChartViewMaker(ResonantModel model) {
+    	// タイトル名
         String title = "input csv file";
         // X軸Name
         String xAxisLabel = "Wavelength";
@@ -82,7 +84,8 @@ public class ChartMaker extends JFrame implements ActionListener{
         plot.setRangeCrosshairVisible(true);
         // 横軸の設定
         NumberAxis xAxis = (NumberAxis)plot.getDomainAxis();
-        xAxis.setAutoRange(true);
+        Range xRange = new Range(model.getMinX(), model.getMaxX());
+        xAxis.setRange(xRange);
         // 縦軸の設定
         NumberAxis yAxis = (NumberAxis)plot.getRangeAxis();
         Range yRange = new Range(model.getMinY() - 2, model.getMaxY() + 2);
@@ -100,11 +103,11 @@ public class ChartMaker extends JFrame implements ActionListener{
             0.2f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
         renderer.setBaseOutlineStroke(stroke);
          
-        ChartPanel cpanel = new ChartPanel(Chart);
+        cpanel = new MyChartPanel(Chart, model);
         getContentPane().add(cpanel, BorderLayout.CENTER);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(320, 300, 800, 500);
+        this.setBounds(370, 300, 800, 500);
         this.setTitle("input csv file");
         this.setVisible(true);
         
@@ -112,16 +115,13 @@ public class ChartMaker extends JFrame implements ActionListener{
           
     }
      
-    // 折れ線グラフのデータを設定
     private XYSeriesCollection dataset() {
          
         data = new XYSeriesCollection();
-        // 系列を作成
         series = new XYSeries("");
-         
         data.addSeries(series);
         return data;
-         
+        
     }
      
     public void readData(ResonantModel model) {
@@ -132,12 +132,11 @@ public class ChartMaker extends JFrame implements ActionListener{
      
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
 		
 	}
 	
 	static public void showChart(ResonantModel model){
-		new ChartMaker(model);
+		new ChartViewMaker(model);
 	}
  
 }
